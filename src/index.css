@@ -144,3 +144,6 @@ background-color: rgba(255, 255, 255, 0);
 .makeStyles-chip-22{
   justify-content: space-between;
 }
+#count{
+  text-align: right;
+}

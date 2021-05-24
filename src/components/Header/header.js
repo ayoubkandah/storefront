@@ -1,4 +1,6 @@
 import React from 'react';
+import {connect} from "react-redux"
+
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -13,6 +15,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 
 const useStyles = makeStyles((theme) => ({
+
     root: {
         flexGrow: 1,
     },
@@ -24,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Header() {
+export  function Header(props) {
     const classes = useStyles();
     const [auth, setAuth] = React.useState(true);
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -52,6 +55,9 @@ export default function Header() {
 
                     <Typography variant="h6" className={classes.title}>
                         AK Store
+                    </Typography>
+                    <Typography variant="p" id="count" className={classes.title}>
+                       Cart({props.Cart.length})
                     </Typography>
                     {auth && (
                         <div>
@@ -81,3 +87,8 @@ export default function Header() {
         </div>
     );
 }
+const mapStateToProps=(state)=>{
+    return {Cart:state.Cart}
+}
+
+export default connect(mapStateToProps)(Header)
