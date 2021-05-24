@@ -12,8 +12,30 @@ const initState= {
 // Reducers
      const Products=(state=initState,action)=>{
     const {type,payload}=action;
+    let Products
     switch (type){
+        case "dec":
+             Products=state.Products.map((ele)=>{
+                if(ele.name===payload){
+                    return{...ele,stock:ele.stock-1}
+                }else{
+                    return ele
+                }
 
+            })
+            console.log(Products)
+            return {Products}
+        case "inc":
+             Products=state.Products.map((ele)=>{
+                if(ele.name===payload){
+                    return{...ele,stock:ele.stock+1}
+                }else{
+                    return ele
+                }
+
+            })
+            console.log(Products)
+            return {Products}
         default :
             return state
     }
@@ -21,4 +43,17 @@ const initState= {
 }
 
 export default Products
+
+export  const decreaseStock=(name)=>{
+    return{
+        type:"dec",
+        payload:name,
+    }
+}
+export  const increaseStock=(name)=>{
+    return{
+        type:"inc",
+        payload:name,
+    }
+}
 

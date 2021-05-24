@@ -12,6 +12,9 @@ import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import  {Active} from "../../data/category"
+import {Add} from "../../data/cart"
+import {decreaseStock} from "../../data/products"
+
 import Category from "../../data/category";
 import Products from "../../data/products";
 // import mapStateToProps from "react-redux/lib/connect/mapStateToProps";
@@ -19,7 +22,6 @@ import Products from "../../data/products";
 
 const Categories =(props)=>{
     const [value, setValue] = React.useState(0);
-
     const handleChange = (event, newValue) => {
         console.log(newValue)
         setValue(newValue);
@@ -69,7 +71,7 @@ const Categories =(props)=>{
             {props.Category.category.category.map((ele)=>{
 if(ele.name===props.Category.activeCategory){
     return(
-        <h5>{ele.description}</h5>
+        <h5 key={ele.name}>{ele.description}</h5>
     )
 }else{return null}
             })}
@@ -94,10 +96,21 @@ return (
                                 <Typography variant="body2" color="textSecondary" component="p">
                                     {ele.description}
                                 </Typography>
+                                <Typography gutterBottom className="price"  component="h3">
+                                   Price: {ele.price}$
+                                </Typography>
+                                <Typography gutterBottom className="stock"  component="h3">
+                                    inStock:{ele.stock}
+                                </Typography>
                             </CardContent>
                         </CardActionArea>
                         <CardActions>
-                            <Button size="small" color="primary">
+                            <Button onClick={()=>{
+                                props.decreaseStock(ele.name)
+                                props.Add(ele)
+
+                                console.log(props.Cart)
+                            }} size="small" color="primary">
                                 Add to cart
                             </Button>
                             <Button size="small" color="primary">
@@ -119,7 +132,7 @@ return (
 )}
 
 const mapStateToProps=(state)=>{
-    return {Category:state.Category,Products:state.Products}
+    return {Category:state.Category,Products:state.Products,Cart:state.Cart}
 }
-const mapDispatchToProps={Active}
+const mapDispatchToProps={Active,Add,decreaseStock}
 export default connect(mapStateToProps,mapDispatchToProps)(Categories)
