@@ -35,11 +35,12 @@ export const getData = function () {
 };
 
 export const incUpdate = function (id,stock) {
+    let stockc=stock-1
     return (dispatch) => {
         return axios({
             method: 'put',
             url: `${url}/${id}`,
-            data: {inStock:stock+1}
+            data: {inStock:stockc+1}
         }).then((response) => {
             dispatch(incAction({ Products: response.data }));
         });

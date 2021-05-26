@@ -44,11 +44,13 @@ export default  function Header(props) {
         let e=cookie.load("cart")
         console.log(e,"cooockie22")
 
-        if(e.length>0){
+        if(e){
+            if(e.length>0){
         e.map((ele)=>{
             console.log(ele,"cooockie")
            dispatch(Add(ele))
         })
+            }
         }
     },[])
     const classes = useStyles();
