@@ -1,15 +1,12 @@
-# Store Front
-adding cart component 
-make reducer for cart and prducts and category 
-display simple cart 
-increasing and decreasing stock
-delete button for cart 
-some Css
+# Ak store 
+using Live Inventory foR storing data and post data and update
 
-we will be adding the “Add to Cart” feature to our application, which will allow our users to not only browse items in the store, but also select them and have them persist in their “shopping cart” for later purchase.
+using cookie to save what user added in cart and make a connnection between carts and the live inventory api 
 
-# [netlify](https://60abc8b80bf8d52e8eedb86f--confident-dubinsky-ace6a5.netlify.app/)
+# [netlify]()
 
-uml
-![d](./lab37.png)
+UML 
+
+![DD](./lab39.png)
+
 
