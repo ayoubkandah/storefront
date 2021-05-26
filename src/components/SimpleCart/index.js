@@ -3,9 +3,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
 import Paper from '@material-ui/core/Paper';
-import {Active} from "../../data/category";
-import {deleteC} from "../../data/cart";
-import {increaseStock} from "../../data/products";
+import {deleteC} from "../../data/action";
+import {incUpdate} from "../../data/action";
 
 const useStyles = makeStyles((theme) => ({
      root: {
@@ -22,18 +21,16 @@ const useStyles = makeStyles((theme) => ({
 
   function SimpleCart(props) {
      const classes = useStyles();
-
-      function deleteHandler(index,name) {
+      function deleteHandler(index,id,stock) {
           props.deleteC(index)
-          props.increaseStock(name)
+          props.incUpdate(id,stock)
       }
-
       return (
          <Paper id="cart" component="ul" className={classes.root}>
               {props.Cart.map((ele,index)=>(
-                  <Chip
+                  <Chip key={index}
                       label={ele.name}
-                      onDelete={()=>{deleteHandler(index,ele.name)}}
+                      onDelete={()=>{deleteHandler(index,ele._id,ele.inStock)}}
                       className={classes.chip}
                   />
 
@@ -45,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 const mapStateToProps=(state)=>{
      return {Cart:state.Cart}
 }
-const mapDispatchToProps={deleteC,increaseStock}
+const mapDispatchToProps={deleteC,incUpdate}
 
 export default connect(mapStateToProps,mapDispatchToProps)(SimpleCart)
 

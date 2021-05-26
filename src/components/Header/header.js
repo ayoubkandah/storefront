@@ -1,5 +1,5 @@
-import React from 'react';
-import {connect} from "react-redux"
+import React, {useEffect} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -13,6 +13,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import {getData,Add} from "../../data/action";
+import cookie from "react-cookies"
 
 const useStyles = makeStyles((theme) => ({
 
@@ -27,7 +29,28 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export  function Header(props) {
+export default  function Header(props) {
+    const state = useSelector((state) => {
+        return {
+            Category:state.Category,
+            Products:state.Products,
+            Cart:state.Cart,
+        };
+    });
+
+    const dispatch = useDispatch();
+    useEffect(()=>{
+        dispatch(getData())
+        let e=cookie.load("cart")
+        console.log(e,"cooockie22")
+
+        if(e.length>0){
+        e.map((ele)=>{
+            console.log(ele,"cooockie")
+           dispatch(Add(ele))
+        })
+        }
+    },[])
     const classes = useStyles();
     const [auth, setAuth] = React.useState(true);
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -53,11 +76,11 @@ export  function Header(props) {
             <AppBar position="static">
                 <Toolbar>
 
-                    <Typography variant="h6" className={classes.title}>
-                        AK Store
+                    <Typography  variant="h6" className={classes.title}>
+                        <img src="https://flamingtext.com/net-fu/proxy_form.cgi?script=jump-anim-logo&fontname=Husky+Stash&fontsize=52&text=AK+Store&script=jump-anim-logo&text=AK+Store&fontsize=52&fontname=Husky+Stash&textColor=%23fff&distance=9&transparent=on&imageoutput=true"/>
                     </Typography>
-                    <Typography variant="p" id="count" className={classes.title}>
-                       Cart({props.Cart.length})
+                    <Typography  id="count" className={classes.title}>
+                       Cart({state.Cart.length})
                     </Typography>
                     {auth && (
                         <div>
@@ -87,8 +110,3 @@ export  function Header(props) {
         </div>
     );
 }
-const mapStateToProps=(state)=>{
-    return {Cart:state.Cart}
-}
-
-export default connect(mapStateToProps)(Header)

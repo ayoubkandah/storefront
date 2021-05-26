@@ -1,5 +1,6 @@
-import {connect} from "react-redux"
-import React,{useState} from "react";
+import React,{useEffect} from "react";
+import { useSelector, useDispatch } from 'react-redux';
+
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -11,27 +12,40 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import  {Active} from "../../data/category"
-import {Add} from "../../data/cart"
-import {decreaseStock} from "../../data/products"
+import {Active,decUpdate} from "../../data/action"
+import {Add} from "../../data/action"
 
 import Category from "../../data/category";
 import Products from "../../data/products";
 // import mapStateToProps from "react-redux/lib/connect/mapStateToProps";
 // import mapDispatchToProps from "react-redux/lib/connect/mapDispatchToProps";
 
-const Categories =(props)=>{
+export default function  Categories(){
+    const state = useSelector((state) => {
+        return {
+            Category:state.Category,
+            Products:state.Products,
+            Cart:state.Cart,
+        };
+    });
+    const dispatch = useDispatch();
     const [value, setValue] = React.useState(0);
+
+    // useEffect(()=>{
+    //
+    //
+    //
+    // },[state.Inventory])
     const handleChange = (event, newValue) => {
         console.log(newValue)
         setValue(newValue);
 
         if(newValue===0){
-            console.log(props.Category.category)
-            props.Active("console")
+            // console.log(props.Category.category)
+            dispatch(Active("console"))
 
         }else if (newValue===1){
-            props.Active("mobile")
+            dispatch(Active("mobile"))
 
 
         }
@@ -65,11 +79,11 @@ const Categories =(props)=>{
         </Paper>
 
 
-
-        {props.Category.activeCategory ?  <>
-            <h4>{props.Category.activeCategory.toUpperCase()}</h4>
-            {props.Category.category.category.map((ele)=>{
-if(ele.name===props.Category.activeCategory){
+{console.log(state.Products,"laaaaaaaaaaaaaaaaast")}
+        {state.Category.activeCategory ?  <>
+            <h4>{state.Category.activeCategory.toUpperCase()}</h4>
+            {state.Category.category.category.map((ele)=>{
+if(ele.name===state.Category.activeCategory){
     return(
         <h5 key={ele.name}>{ele.description}</h5>
     )
@@ -77,39 +91,39 @@ if(ele.name===props.Category.activeCategory){
             })}
             <div className="section">
 
-            {props.Products.Products.map((ele)=> {
+            {state.Products.Products.map((ele)=> {
 
                     // console.log(ele ,"----",props.Category.activeCategory)
-                if (ele.category === props.Category.activeCategory) {
+                if (ele.category === state.Category.activeCategory) {
 return (
                     <Card key={ele.name} className={classes.root}>
                         <CardActionArea>
                             <CardMedia
                                 className={classes.media}
-                                image={ele.image}
+                                image={ele.description.split("!")[0]}
                                 title={ele.name}
                             />
                             <CardContent>
-                                <Typography gutterBottom variant="h5" component="h2">
+                                <Typography  gutterBottom variant="h5" component="h2">
                                     {ele.name}
                                 </Typography>
                                 <Typography variant="body2" color="textSecondary" component="p">
-                                    {ele.description}
+                                    {ele.description.split("!")[1]}
                                 </Typography>
                                 <Typography gutterBottom className="price"  component="h3">
                                    Price: {ele.price}$
                                 </Typography>
                                 <Typography gutterBottom className="stock"  component="h3">
-                                    inStock:{ele.stock}
+                                    inStock:{ele.inStock}
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
                         <CardActions>
                             <Button onClick={()=>{
-                                props.decreaseStock(ele.name)
-                                props.Add(ele)
+                                dispatch(decUpdate(ele._id,ele.inStock))
+                                dispatch(Add(ele))
 
-                                console.log(props.Cart)
+                                console.log(state.Cart)
                             }} size="small" color="primary">
                                 Add to cart
                             </Button>
@@ -130,9 +144,9 @@ return (
     </>
 
 )}
-
-const mapStateToProps=(state)=>{
-    return {Category:state.Category,Products:state.Products,Cart:state.Cart}
-}
-const mapDispatchToProps={Active,Add,decreaseStock}
-export default connect(mapStateToProps,mapDispatchToProps)(Categories)
+//
+// const mapStateToProps=(state)=>{
+//     return {Category:state.Category,Products:state.Products,Cart:state.Cart,Inventory:state.Inventory}
+// }
+// const mapDispatchToProps={Active,Add,decreaseStock,getData}
+// export default connect(mapStateToProps,mapDispatchToProps)(Categories)

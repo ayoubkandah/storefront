@@ -20,12 +20,7 @@ const Category=(state=initState,action)=>{
 }
 export default Category
 //  ACtions
-export  const Active=(name)=>{
-    return{
-        type:'Active',
-        payload :name,
-    }
-}
+
 
 
 

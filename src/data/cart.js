@@ -1,3 +1,4 @@
+import cookie from "react-cookies"
 // Initial State
 const cart= []
 
@@ -7,7 +8,7 @@ const Cart=(state=cart,action)=>{
     const {type,payload}=action;
     switch (type){
         case 'Add':
-
+            cookie.save("cart",[...state,payload])
 // console.log(cart,"eee")
             return [...state,payload]
 
@@ -17,6 +18,8 @@ const Cart=(state=cart,action)=>{
                     return false
                 }else{return true}
             })
+            cookie.save("cart",cart)
+
             return cart
         default :
 
@@ -25,17 +28,3 @@ const Cart=(state=cart,action)=>{
 }
 export default Cart
 //  ACtions
-export  const Add=(name)=>{
-
-    return{
-        type:'Add',
-        payload :name,
-    }
-}
-
-export const deleteC=(name)=>{
-    return{
-        type:"delete",
-        payload:name,
-    }
-}
